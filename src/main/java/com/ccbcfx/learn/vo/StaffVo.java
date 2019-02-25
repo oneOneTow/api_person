@@ -1,5 +1,6 @@
 package com.ccbcfx.learn.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,6 +16,7 @@ public class StaffVo {
     private String name;
     @Past
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date birthday;
     @NotBlank(message = "身份证类型不能为空")
     private String documentType;
