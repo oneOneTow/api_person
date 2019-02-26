@@ -2,6 +2,8 @@ package com.ccbcfx.learn.service;
 
 import com.ccbcfx.learn.vo.StaffVo;
 
+import java.util.List;
+
 public interface StaffService {
     /**
      *
@@ -10,4 +12,7 @@ public interface StaffService {
      * @return
      */
      int addStaff(StaffVo staffVo,String createBy);
+
+     List<StaffVo> getStaffs();
+     boolean delete(int id);
 }

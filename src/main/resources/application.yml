@@ -1,12 +1,10 @@
 server:
   port: 8081
-  session:
-    timeout: 2000
 spring:
   application:
     name: api-person
-#  session:
-#    store-type: redis
+  session:
+    store-type: none
 #  redis:
 #    host: vens.com
 #    port: 6379

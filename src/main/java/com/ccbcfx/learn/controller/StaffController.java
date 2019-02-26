@@ -2,10 +2,17 @@ package com.ccbcfx.learn.controller;
 
 import com.ccbcfx.learn.service.StaffService;
 import com.ccbcfx.learn.vo.StaffVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
+@Api(value = "员工controller",tags = {"员工操作接口"})
 @RestController
 public class StaffController {
 
@@ -13,14 +20,21 @@ public class StaffController {
     StaffService staffService;
     /**
      * 根据id查询员工 test
-     * @param id
+     * @param
      * @return
      */
-    @RequestMapping(path = "/staff/{id}",
+    @RequestMapping(path = "/staff/list",
             method = RequestMethod.GET)
-    public StaffVo getStaffById(@PathVariable String id){
-        StaffVo staffVo=new StaffVo();
-        return staffVo;
+    @ApiOperation(value = "查询所有员工" )
+    public List<StaffVo> getStaffs(){
+        return staffService.getStaffs();
+    }
+
+    @DeleteMapping(path = "/staff/{id}")
+    @ApiOperation(value = "删除员工")
+    @ApiParam(name = "id", value = "员工唯一标识符", required = true)
+    public boolean delete(@PathVariable int id){
+        return staffService.delete(id);
     }
 
     /**
@@ -29,6 +43,8 @@ public class StaffController {
      * @return
      */
     @PostMapping(path = "/staff")
+    @ApiOperation(value = "添加员工" )
+    @ApiImplicitParam(name = "staff", value = "员工实体staff", required = true, dataType = "StaffVo")
     public int addStaff(@RequestBody StaffVo staff){
         return staffService.addStaff(staff,"luzhiqing");
     }
