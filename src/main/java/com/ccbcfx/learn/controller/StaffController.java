@@ -2,11 +2,8 @@ package com.ccbcfx.learn.controller;
 
 import com.ccbcfx.learn.service.StaffService;
 import com.ccbcfx.learn.vo.StaffVo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +41,6 @@ public class StaffController {
      */
     @PostMapping(path = "/staff")
     @ApiOperation(value = "添加员工" )
-    @ApiImplicitParam(name = "staff", value = "员工实体staff", required = true, dataType = "StaffVo")
     public int addStaff(@RequestBody StaffVo staff){
         return staffService.addStaff(staff,"luzhiqing");
     }
