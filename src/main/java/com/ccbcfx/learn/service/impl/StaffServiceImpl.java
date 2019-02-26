@@ -1,9 +1,9 @@
 package com.ccbcfx.learn.service.impl;
 
 
-//import com.ccbcfx.learn.enums.DocumentType;
-//import com.ccbcfx.learn.enums.GenderType;
-//import com.ccbcfx.learn.enums.StaffStatusType;
+import com.ccbcfx.learn.enums.DocumentType;
+import com.ccbcfx.learn.enums.GenderType;
+import com.ccbcfx.learn.enums.StaffStatusType;
 import com.ccbcfx.learn.remote.dto.StaffDto;
 import com.ccbcfx.learn.service.StaffService;
 import com.ccbcfx.learn.vo.StaffVo;
@@ -31,12 +31,12 @@ public class StaffServiceImpl implements StaffService {
         staff.setName(staffVo.getName());
         LocalDateTime birthday=LocalDateTime.ofInstant(staffVo.getBirthday().toInstant(),ZoneId.systemDefault());
         staff.setBirthday(birthday);
-//        staff.setDocumentType(DocumentType.getEnumByDesc(staffVo.getDocumentType()).getOrder());
+        staff.setDocumentType(DocumentType.getEnumByDesc(staffVo.getDocumentType()).getOrder());
         staff.setDocumentNumber(staffVo.getDocumentNumber());
         staff.setCreateBy(createBy);
-//        staff.setGender(GenderType.getEnumByDesc(staffVo.getGender()).getOrder());
+        staff.setGender(GenderType.getEnumByDesc(staffVo.getGender()).getOrder());
         staff.setCreateAt(LocalDateTime.now());
-//        staff.setStatus(StaffStatusType.working.getOrder());
+        staff.setStatus(StaffStatusType.working.getOrder());
         return staffService.createStaff(staff);
     }
 
