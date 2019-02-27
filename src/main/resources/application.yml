@@ -5,6 +5,17 @@ spring:
     name: api-person
   session:
     store-type: none
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    publisher-confirms: true
+    publisher-returns: true
+    template:
+      mandatory: true
+
+
 #  redis:
 #    host: vens.com
 #    port: 6379

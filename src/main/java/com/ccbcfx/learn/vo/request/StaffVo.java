@@ -1,4 +1,4 @@
-package com.ccbcfx.learn.vo;
+package com.ccbcfx.learn.vo.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
@@ -20,8 +20,8 @@ public class StaffVo implements Serializable {
     @ApiModelProperty(value = "名字",name = "name",example = "luzhiqing",notes = "长度20中英文")
     private String name;
     @Past
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "生日",name = "birthday",example = "yyyy-MM-dd HH:mm:ss")
     private Date birthday;
     @NotBlank(message = "身份证类型不能为空")

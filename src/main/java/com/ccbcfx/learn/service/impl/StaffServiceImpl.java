@@ -6,7 +6,7 @@ import com.ccbcfx.learn.enums.GenderType;
 import com.ccbcfx.learn.enums.StaffStatusType;
 import com.ccbcfx.learn.remote.dto.StaffDto;
 import com.ccbcfx.learn.service.StaffService;
-import com.ccbcfx.learn.vo.StaffVo;
+import com.ccbcfx.learn.vo.request.StaffVo;
 import ma.glasnost.orika.MapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,3 +57,4 @@ public class StaffServiceImpl implements StaffService {
         return staffService.delete(id);
     }
 }
+

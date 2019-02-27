@@ -1,6 +1,6 @@
 package com.ccbcfx.learn.service;
 
-import com.ccbcfx.learn.vo.StaffVo;
+import com.ccbcfx.learn.vo.request.StaffVo;
 
 import java.util.List;
 

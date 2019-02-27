@@ -1,7 +1,7 @@
 package com.ccbcfx.learn.config;
 
 import com.ccbcfx.learn.remote.dto.StaffDto;
-import com.ccbcfx.learn.vo.StaffVo;
+import com.ccbcfx.learn.vo.request.StaffVo;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
