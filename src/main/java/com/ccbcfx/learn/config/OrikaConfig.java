@@ -1,6 +1,8 @@
 package com.ccbcfx.learn.config;
 
+import com.ccbcfx.learn.remote.dto.ConditionsDto;
 import com.ccbcfx.learn.remote.dto.StaffDto;
+import com.ccbcfx.learn.vo.request.ConditionsVo;
 import com.ccbcfx.learn.vo.request.StaffVo;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.converter.BidirectionalConverter;
@@ -25,6 +27,9 @@ public class OrikaConfig {
                 .byDefault()
                 .register();
         mapperFactory.classMap(StaffVo.class,StaffDto.class)
+                .byDefault()
+                .register();
+        mapperFactory.classMap(ConditionsVo.Conditions.class, ConditionsDto.class)
                 .byDefault()
                 .register();
         return mapperFactory;

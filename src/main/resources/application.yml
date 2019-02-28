@@ -14,12 +14,14 @@ spring:
     publisher-returns: true
     template:
       mandatory: true
+  mvc:
+    view:
+      prefix: /
+      suffix: .html
 
-
-#  redis:
-#    host: vens.com
-#    port: 6379
-#    password:
+profile:
+  store-path: D:/img/staff/profile
+  server-url: localhost:8081/profile/
 
 
 
