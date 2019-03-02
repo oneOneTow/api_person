@@ -1,8 +1,6 @@
 package com.ccbcfx.learn.service.impl;
 
 
-import com.ccbcfx.learn.enums.DocumentType;
-import com.ccbcfx.learn.enums.GenderType;
 import com.ccbcfx.learn.enums.StaffStatusType;
 import com.ccbcfx.learn.remote.dto.ConditionsDto;
 import com.ccbcfx.learn.remote.dto.StaffDto;
@@ -14,6 +12,7 @@ import ma.glasnost.orika.MapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -30,16 +29,15 @@ public class StaffServiceImpl implements StaffService {
     MapperFactory mapperFactory;
 
 
-
     @Override
-    public int addStaff(StaffVo staffVo, String createBy) {
+    public int addStaff(StaffVo staffVo, int createBy) {
         StaffDto staff = new StaffDto();
         staff.setName(staffVo.getName());
-        LocalDateTime birthday = LocalDateTime.ofInstant(staffVo.getBirthday().toInstant(), ZoneId.systemDefault());
+        LocalDate birthday = staffVo.getBirthday();
         staff.setBirthday(birthday);
         staff.setDocumentType(staffVo.getDocumentType());
         staff.setDocumentNumber(staffVo.getDocumentNumber());
-        staff.setCreateBy(createBy);
+        staff.setCreateBy(String.valueOf(createBy));
         staff.setGender(staffVo.getGender());
         staff.setCreateAt(LocalDateTime.now());
         staff.setStatus(StaffStatusType.working);
@@ -62,13 +60,23 @@ public class StaffServiceImpl implements StaffService {
         ConditionsDto conditionsDto = mapperFactory.getMapperFacade().map(conditionsVo.getConditions(), ConditionsDto.class);
         int offset = conditionsVo.getOffset();
         int size = conditionsVo.getSize();
-        List<StaffDto> staffDtos=staffService.getStaffs(conditionsDto,offset,size);
-        return null;
+        List<StaffDto> staffDtoList = staffService.getStaffs(conditionsDto, offset, size);
+        List<StaffInfoVo> staffInfoVoList = mapperFactory.getMapperFacade().mapAsList(staffDtoList, StaffInfoVo.class);
+        return staffInfoVoList;
     }
 
     @Override
-    public boolean delete(int id) {
-        return staffService.delete(id);
+    public StaffInfoVo updateStaff(int id, StaffVo staffVo,int updateBy) {
+        StaffDto staffDto=mapperFactory.getMapperFacade().map(staffVo,StaffDto.class);
+        staffDto.setUpdateBy(String.valueOf(updateBy));
+        staffDto.setUpdateAt(LocalDateTime.now());
+        StaffDto result=staffService.updateStaff(id,staffDto);
+        return mapperFactory.getMapperFacade().map(result,StaffInfoVo.class);
+    }
+
+    @Override
+    public boolean delete(int id,int deleteBy) {
+        return staffService.delete(id,deleteBy);
     }
 }
 

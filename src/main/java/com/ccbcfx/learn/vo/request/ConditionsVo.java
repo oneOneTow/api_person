@@ -11,7 +11,8 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Pattern;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 @Data
 @ApiModel(value = "查询条件")
 public class ConditionsVo {
@@ -25,7 +26,6 @@ public class ConditionsVo {
     private int size;
 
     @Data
-    @ApiModel(value = "查询条件")
     public class Conditions{
 
         @Pattern(regexp = "[a-zA-Z\\u4E00-\\u9FA5]*",message = "姓名格式不对")
@@ -35,7 +35,7 @@ public class ConditionsVo {
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         @JsonFormat(pattern = "yyyy-MM-dd")
         @ApiModelProperty(value = "生日",name = "birthday",example = "2018-11-10")
-        private Date birthday;
+        private LocalDate birthday;
 
         @ApiModelProperty(value = "身份证类型",name = "documentType",example = "identityId")
         private DocumentType documentType;
@@ -52,31 +52,38 @@ public class ConditionsVo {
         @ApiModelProperty(value = "员工状态",name = "status",example = "working")
         private StaffStatusType status;
 
+        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @ApiModelProperty(value = "创建时间",name = "createBegin",example = "2018-12-12 12:12:12")
-        private Date createBegin;
+        private LocalDateTime createBegin;
 
+        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @ApiModelProperty(value = "创建时间",name = "createEnd",example = "2019-12-12 12:12:12")
-        private Date createEnd;
+        private LocalDateTime createEnd;
 
+        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @ApiModelProperty(value = "修改时间",name = "updateBegin",example = "2018-12-12 12:12:12")
-        private Date updateBegin;
+        private LocalDateTime updateBegin;
 
+        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @ApiModelProperty(value = "修改时间",name = "updateEnd",example = "2019-12-12 12:12:12")
-        private Date updateEnd;
+        private LocalDateTime updateEnd;
 
+        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @ApiModelProperty(value = "删除时间",name = "deleteBengin",example = "2018-12-12 12:12:12")
-        private Date deleteBengin;
+        private LocalDateTime deleteBengin;
 
+        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @ApiModelProperty(value = "删除时间",name = "deleteEnd",example = "2019-12-12 12:12:12")
-        private Date deleteEnd;
+        private LocalDateTime deleteEnd;
 
         @ApiModelProperty(value = "删除标记",name = "enabled",example = "true")
-        private boolean enabled;
+        private Boolean enabled;
 
-    }
-    public void init(){
-        this.conditions=new Conditions();
-        conditions.name="luzhiqing";
-        conditions.phone="18385067722";
     }
 }

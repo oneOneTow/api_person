@@ -9,6 +9,7 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -21,10 +22,9 @@ public class StaffInfoVo {
     private String name;
 
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+
     @ApiModelProperty(value = "生日", name = "birthday", example = "2018-01-10")
-    private Date birthday;
+    private LocalDate birthday;
 
 
     @ApiModelProperty(value = "身份证类型", name = "documentType", example = "identityId")

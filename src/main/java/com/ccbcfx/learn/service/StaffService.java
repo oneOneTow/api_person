@@ -13,11 +13,12 @@ public interface StaffService {
      * @param createBy
      * @return
      */
-     int addStaff(StaffVo staffVo,String createBy);
+     int addStaff(StaffVo staffVo,int createBy);
 
      List<StaffVo> getStaffs();
-     boolean delete(int id);
+     boolean delete(int id,int updateBy);
     List<StaffInfoVo> getStaffs(ConditionsVo conditionsVo);
+    StaffInfoVo updateStaff(int id,StaffVo staffVo,int updateBy);
 
 
 }

@@ -4,6 +4,7 @@ import com.ccbcfx.learn.remote.dto.ConditionsDto;
 import com.ccbcfx.learn.remote.dto.StaffDto;
 import com.ccbcfx.learn.vo.request.ConditionsVo;
 import com.ccbcfx.learn.vo.request.StaffVo;
+import com.ccbcfx.learn.vo.response.StaffInfoVo;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -23,7 +24,7 @@ public class OrikaConfig {
         mapperFactory.getConverterFactory().registerConverter(new LocalDateConverter());
         mapperFactory.getConverterFactory().registerConverter(new LocalDateTimeConverter());
         mapperFactory.getConverterFactory().registerConverter(new LocalTimeConverter());
-        mapperFactory.classMap(StaffDto.class, StaffVo.class)
+        mapperFactory.classMap(StaffDto.class, StaffInfoVo.class)
                 .byDefault()
                 .register();
         mapperFactory.classMap(StaffVo.class,StaffDto.class)

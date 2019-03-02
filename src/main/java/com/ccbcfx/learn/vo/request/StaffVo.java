@@ -10,9 +10,11 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -28,9 +30,9 @@ public class StaffVo implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "生日", name = "birthday", example = "2018-01-10")
-    private Date birthday;
+    private LocalDate birthday;
 
-    @NotBlank(message = "身份证类型不能为空")
+    @NotNull(message = "身份证类型不能为空")
     @ApiModelProperty(value = "身份证类型", name = "documentType", example = "identityId")
     private DocumentType documentType;
 
@@ -42,7 +44,7 @@ public class StaffVo implements Serializable {
     @ApiModelProperty(value = "电话", name = "phone", example = "18385067722")
     private String phone;
 
-    @NotBlank(message = "电话不能为空")
+    @NotNull(message = "性别不能为空")
     @ApiModelProperty(value = "性别", name = "gender", example = "man")
     private GenderType gender;
 
