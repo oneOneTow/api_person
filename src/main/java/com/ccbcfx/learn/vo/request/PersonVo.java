@@ -1,5 +1,6 @@
 package com.ccbcfx.learn.vo.request;
 
+import com.ccbcfx.learn.annotation.PastLocalDate;
 import com.ccbcfx.learn.enums.DocumentType;
 import com.ccbcfx.learn.enums.GenderType;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -11,22 +12,20 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data
 @ApiModel(value = "staff对象", description = "员工对象")
-public class StaffVo implements Serializable {
+public class PersonVo implements Serializable {
     @NotBlank(message = "姓名不能为空")
     @Length(min = 1, max = 20, message = "姓名不能超过20")
     @Pattern(regexp = "[a-zA-Z\\u4E00-\\u9FA5]*", message = "姓名格式不对")
     @ApiModelProperty(value = "名字", name = "name", example = "luzhiqing", notes = "长度20中英文")
     private String name;
 
-    @Past
+    @PastLocalDate(message = "生日不能是未来时")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "生日", name = "birthday", example = "2018-01-10")

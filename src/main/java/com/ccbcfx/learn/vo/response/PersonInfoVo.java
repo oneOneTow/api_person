@@ -13,15 +13,13 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Data
-public class StaffInfoVo {
+public class PersonInfoVo {
 
     @ApiModelProperty(value = "id", name = "id", example = "1")
     private int id;
 
     @ApiModelProperty(value = "名字", name = "name", example = "luzhiqing")
     private String name;
-
-
 
     @ApiModelProperty(value = "生日", name = "birthday", example = "2018-01-10")
     private LocalDate birthday;
@@ -44,4 +42,7 @@ public class StaffInfoVo {
 
     @ApiModelProperty(value = "性别", name = "gender", example = "man")
     private GenderType gender;
+
+    @ApiModelProperty(value = "头像地址", name = "imgUrl", example = "http://www.baidu.com/profile/id")
+    private String imgUrl;
 }

@@ -1,4 +1,4 @@
-package com.ccbcfx.learn.service.impl;
+package com.ccbcfx.learn.consumer.impl;
 
 import org.junit.Test;
 
