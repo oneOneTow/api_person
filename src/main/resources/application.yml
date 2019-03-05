@@ -1,10 +1,12 @@
 server:
   port: 8081
+  session:
+    timeout: 10000
 spring:
   application:
     name: api-person
   session:
-    store-type: none
+    store-type: redis
   rabbitmq:
     host: 127.0.0.1
     port: 5672
@@ -18,10 +20,17 @@ spring:
     view:
       prefix: /
       suffix: .html
+  redis:
+    host: 119.29.75.134
+    port: 6379
+    password: 7416kobe
+#    static-path-pattern: /image/**
+#  resources:
+#    static-locations: file:D:/img/staff/profile
 
 profile:
   store-path: D:/img/staff/profile
-  server-url: localhost:8081/profile/
+  server-url: http://localhost:8081/image/
 
 
 

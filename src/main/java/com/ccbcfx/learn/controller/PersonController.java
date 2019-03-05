@@ -1,24 +1,26 @@
 package com.ccbcfx.learn.controller;
 
-import com.ccbcfx.learn.consumer.PersonService;
+import com.ccbcfx.learn.bean.ResultBean;
+import com.ccbcfx.learn.service.PersonService;
 import com.ccbcfx.learn.vo.request.ConditionsVo;
 import com.ccbcfx.learn.vo.request.PersonLeaveVo;
 import com.ccbcfx.learn.vo.request.PersonVo;
+import com.ccbcfx.learn.vo.response.PagePersonInfoVo;
 import com.ccbcfx.learn.vo.response.PersonInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.List;
 
-@Api(value = "员工controller", tags = {"员工操作接口"})
+@Api(value = "员工controller")
 @RestController
 public class PersonController {
 
@@ -34,8 +36,8 @@ public class PersonController {
      */
     @PostMapping(path = "/person/search")
     @ApiOperation(value = "按条件查询数据")
-    public List<PersonInfoVo> getPersonsByConditions(@Valid @RequestBody ConditionsVo conditions) {
-        return personService.getPersons(conditions);
+    public ResultBean<PagePersonInfoVo> getPersonsByConditions(@Valid @RequestBody ConditionsVo conditions) {
+        return new ResultBean<>(personService.getPersons(conditions));
     }
 
     /**
@@ -46,8 +48,8 @@ public class PersonController {
      */
     @RequestMapping(path = "/person/leave", method = RequestMethod.POST)
     @ApiOperation(value = "员工离职")
-    public boolean leave(@RequestBody PersonLeaveVo personLeaveVo) {
-        return personService.leave(personLeaveVo);
+    public ResultBean<Boolean> leave(@RequestBody PersonLeaveVo personLeaveVo) {
+        return new ResultBean<>(personService.leave(personLeaveVo));
     }
 
     /**
@@ -59,26 +61,23 @@ public class PersonController {
     @DeleteMapping(path = "/person/{id}")
     @ApiOperation(value = "删除员工")
     @ApiParam(name = "id", value = "员工唯一标识符", required = true)
-    public boolean delete(@PathVariable int id,HttpSession session) {
-        int userId=getUserId(session);
-        return personService.delete(id,userId);
+    public ResultBean<Boolean> delete(@PathVariable int id) {
+        return new ResultBean<>(personService.delete(id));
     }
 
     /**
      * 修改员工
      *
      * @param id
-     * @param staffVo
+     * @param person
      * @return
      */
     @PutMapping(path = "/person/{id}")
     @ApiOperation(value = "修改员工")
     @ApiParam(name = "id", value = "员工唯一标识符", required = true)
-    public PersonInfoVo updatePerson(@PathVariable int id,
-                                     @Valid @RequestBody PersonVo staffVo,
-                                     HttpSession session) {
-        int userId = getUserId(session);
-        return personService.updatePerson(id, staffVo, userId);
+    public ResultBean<Boolean> updatePerson(@PathVariable int id,
+                                            @Valid @RequestBody PersonVo person) {
+        return new ResultBean<>(personService.updatePerson(id, person));
     }
 
     /**
@@ -90,43 +89,69 @@ public class PersonController {
     @GetMapping(path = "/person/{id}")
     @ApiOperation(value = "查询单个员工")
     @ApiParam(name = "id", value = "员工唯一标识符", required = true)
-    public PersonInfoVo getPerson(@PathVariable int id) {
-        return personService.getPerson(id);
+    public ResultBean<PersonInfoVo> getPerson(@PathVariable int id) {
+        return new ResultBean<>(personService.getPerson(id));
+    }
+
+    /**
+     * 查询所有员工
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping(path = "/person/list")
+    @ApiOperation(value = "查询所有员工")
+    @ApiParam(name = "id", value = "员工唯一标识符", required = true)
+    public ResultBean<PagePersonInfoVo> getPersonList(int offset, int size) {
+        return new ResultBean<>(personService.getPersonList(offset, size));
     }
 
     /**
      * 添加一名员工
      *
-     * @param staff
+     * @param person
      * @return
      */
     @PostMapping(path = "/person")
     @ApiOperation(value = "添加员工")
-    public int addPerson(@Valid @RequestBody PersonVo staff,
-                        HttpSession session) {
-        int userId = getUserId(session);
-        return personService.addPerson(staff, userId);
+    public ResultBean<Integer> addPerson(@Valid @RequestBody PersonVo person) {
+        return new ResultBean<>(personService.addPerson(person));
     }
 
+    /**
+     * 上传员工头像
+     *
+     * @param id
+     * @param profile
+     * @return
+     */
     @ApiOperation("上传头像")
     @PutMapping(path = "/Portrait/{id}")
-    public String uploadPortrait(@RequestParam(required = true) MultipartFile profile,
-                             @PathVariable int id){
-        return personService.uploadPortrait(profile,id);
+    public ResultBean<String> uploadPortrait(@PathVariable int id,
+                                             @RequestParam(required = true)
+                                                     MultipartFile profile) {
+        return new ResultBean<>(personService.uploadPortrait(profile, id));
     }
 
-    @ApiOperation("获取头像")
-    @GetMapping(path = "/Portrait")
-    @ApiParam(name = "fileName", value = "员工头像唯一标识符", required = true)
-    public ResponseEntity showPortrait(@RequestParam String fileName){
-        return ResponseEntity.ok(personService.getPortrait(fileName));
+    /**
+     * 模拟login
+     *
+     * @param name
+     * @param password
+     * @return
+     */
+    @ApiOperation("上传头像")
+    @PutMapping(path = "/login")
+    public ResultBean<PersonInfoVo> login(@RequestParam String name,
+                                          @RequestParam String password,
+                                          HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("login_________________________");
+        System.out.println(request.getSession().getId());
+        request.getSession().setAttribute("user",14101310);
+        PersonInfoVo personInfoVo=new PersonInfoVo();
+        personInfoVo.setName("luzhiqing");
+        return new ResultBean<>(personInfoVo);
     }
-
-
-    public int getUserId(HttpSession session){
-        return 0;
-    }
-
 }
 
 

@@ -1,10 +1,8 @@
 package com.ccbcfx.learn.config;
 
-import com.ccbcfx.learn.remote.dto.ConditionsDto;
-import com.ccbcfx.learn.remote.dto.StaffDto;
-import com.ccbcfx.learn.vo.request.ConditionsVo;
-import com.ccbcfx.learn.vo.request.PersonVo;
-import com.ccbcfx.learn.vo.response.PersonInfoVo;
+
+import com.ccbcfx.learn.remote.dto.PageStaffDTO;
+import com.ccbcfx.learn.vo.response.PagePersonInfoVo;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -24,13 +22,8 @@ public class OrikaConfig {
         mapperFactory.getConverterFactory().registerConverter(new LocalDateConverter());
         mapperFactory.getConverterFactory().registerConverter(new LocalDateTimeConverter());
         mapperFactory.getConverterFactory().registerConverter(new LocalTimeConverter());
-        mapperFactory.classMap(StaffDto.class, PersonInfoVo.class)
-                .byDefault()
-                .register();
-        mapperFactory.classMap(PersonVo.class,StaffDto.class)
-                .byDefault()
-                .register();
-        mapperFactory.classMap(ConditionsVo.Conditions.class, ConditionsDto.class)
+        mapperFactory.classMap(PageStaffDTO.class, PagePersonInfoVo.class)
+                .field("staffDtoList","personList")
                 .byDefault()
                 .register();
         return mapperFactory;

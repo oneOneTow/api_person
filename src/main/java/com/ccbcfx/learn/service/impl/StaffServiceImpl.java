@@ -1,13 +1,15 @@
-package com.ccbcfx.learn.consumer.impl;
+package com.ccbcfx.learn.service.impl;
 
 
 import com.ccbcfx.learn.enums.StaffStatusType;
-import com.ccbcfx.learn.remote.dto.ConditionsDto;
-import com.ccbcfx.learn.remote.dto.StaffDto;
-import com.ccbcfx.learn.consumer.PersonService;
+import com.ccbcfx.learn.remote.dto.ConditionsDTO;
+import com.ccbcfx.learn.remote.dto.PageStaffDTO;
+import com.ccbcfx.learn.remote.dto.StaffDTO;
+import com.ccbcfx.learn.service.PersonService;
 import com.ccbcfx.learn.vo.request.ConditionsVo;
 import com.ccbcfx.learn.vo.request.PersonLeaveVo;
 import com.ccbcfx.learn.vo.request.PersonVo;
+import com.ccbcfx.learn.vo.response.PagePersonInfoVo;
 import com.ccbcfx.learn.vo.response.PersonInfoVo;
 import ma.glasnost.orika.MapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import java.util.List;
+import static com.ccbcfx.learn.util.UserUtil.*;
 
 @Service
 public class StaffServiceImpl implements PersonService {
@@ -43,14 +45,14 @@ public class StaffServiceImpl implements PersonService {
 
 
     @Override
-    public int addPerson(PersonVo staffVo, int createBy) {
-        StaffDto staff = new StaffDto();
+    public int addPerson(PersonVo staffVo) {
+        StaffDTO staff = new StaffDTO();
         staff.setName(staffVo.getName());
         LocalDate birthday = staffVo.getBirthday();
         staff.setBirthday(birthday);
         staff.setDocumentType(staffVo.getDocumentType());
         staff.setDocumentNumber(staffVo.getDocumentNumber());
-        staff.setCreateBy(createBy);
+        staff.setCreateBy(getUser());
         staff.setGender(staffVo.getGender());
         staff.setCreateAt(LocalDateTime.now());
         staff.setStatus(StaffStatusType.working);
@@ -58,33 +60,41 @@ public class StaffServiceImpl implements PersonService {
     }
 
     @Override
-    public boolean delete(int id, int deleteBy) {
-        return staffService.delete(id, deleteBy);
+    public boolean delete(int id) {
+        Integer userId= getUser();
+        return staffService.delete(id, userId);
     }
 
     @Override
-    public PersonInfoVo updatePerson(int id, PersonVo staffVo, int updateBy) {
-        StaffDto staffDto = mapperFactory.getMapperFacade().map(staffVo, StaffDto.class);
-        staffDto.setUpdateBy(updateBy);
+    public boolean updatePerson(int id, PersonVo staffVo) {
+        StaffDTO staffDto = mapperFactory.getMapperFacade().map(staffVo, StaffDTO.class);
+        staffDto.setUpdateBy(getUser());
         staffDto.setUpdateAt(LocalDateTime.now());
-        StaffDto result = staffService.updateStaff(id, staffDto);
-        return mapperFactory.getMapperFacade().map(result, PersonInfoVo.class);
+
+        return staffService.updateStaff(id, staffDto);
     }
 
     @Override
     public PersonInfoVo getPerson(int id) {
-        StaffDto staffDto = staffService.getStaff(id);
+        StaffDTO staffDto = staffService.getStaff(id);
         return mapperFactory.getMapperFacade().map(staffDto, PersonInfoVo.class);
     }
 
     @Override
-    public List<PersonInfoVo> getPersons(ConditionsVo conditionsVo) {
-        ConditionsDto conditionsDto = mapperFactory.getMapperFacade().map(conditionsVo.getConditions(), ConditionsDto.class);
+    public PagePersonInfoVo getPersonList(int offset, int size) {
+        PageStaffDTO pageStaffDTO = staffService.getStaffList(offset,size);
+        PagePersonInfoVo staffInfoVo = mapperFactory.getMapperFacade().map(pageStaffDTO, PagePersonInfoVo.class);
+        return staffInfoVo;
+    }
+
+    @Override
+    public PagePersonInfoVo getPersons(ConditionsVo conditionsVo) {
+        ConditionsDTO conditionsDto = mapperFactory.getMapperFacade().map(conditionsVo.getConditions(), ConditionsDTO.class);
         int offset = conditionsVo.getOffset();
         int size = conditionsVo.getSize();
-        List<StaffDto> staffDtoList = staffService.getStaffs(conditionsDto, offset, size);
-        List<PersonInfoVo> staffInfoVoList = mapperFactory.getMapperFacade().mapAsList(staffDtoList, PersonInfoVo.class);
-        return staffInfoVoList;
+        PageStaffDTO staffDto = staffService.getStaffs(conditionsDto, offset, size);
+        PagePersonInfoVo staffInfoVo = mapperFactory.getMapperFacade().map(staffDto, PagePersonInfoVo.class);
+        return staffInfoVo;
     }
 
     @Override
