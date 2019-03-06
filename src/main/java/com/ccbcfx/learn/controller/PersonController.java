@@ -12,7 +12,6 @@ import io.swagger.annotations.ApiOperation;
 
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -140,7 +139,7 @@ public class PersonController {
      * @param password
      * @return
      */
-    @ApiOperation("上传头像")
+    @ApiOperation("Login")
     @PutMapping(path = "/login")
     public ResultBean<PersonInfoVo> login(@RequestParam String name,
                                           @RequestParam String password,

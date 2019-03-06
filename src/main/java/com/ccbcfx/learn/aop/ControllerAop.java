@@ -2,6 +2,7 @@ package com.ccbcfx.learn.aop;
 
 import com.ccbcfx.learn.bean.ResultBean;
 import com.ccbcfx.learn.exception.CheckException;
+import com.ccbcfx.learn.exception.UnloginException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -48,6 +49,10 @@ public class ControllerAop {
                 || e instanceof IllegalArgumentException) {
             result.setMsg(e.getLocalizedMessage());
             result.setCode(ResultBean.CHECK_FAIL);
+        }
+        if (e instanceof UnloginException ) {
+            result.setMsg(e.getLocalizedMessage());
+            result.setCode(ResultBean.UN_LOGIN);
         }
         else {
             logger.error(pjp.getSignature() + " error ", e);
