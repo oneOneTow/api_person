@@ -33,9 +33,10 @@ public class PersonController {
      * @param conditions 查询条件
      * @return
      */
-    @PostMapping(path = "/person/search")
     @ApiOperation(value = "按条件查询数据")
-    public ResultBean<PagePersonInfoVo> getPersonsByConditions(@Valid @RequestBody ConditionsVo conditions) {
+    @RequestMapping(path = "/person/search", method = RequestMethod.POST)
+    public ResultBean<PagePersonInfoVo>
+    getPersonsByConditions(@Valid @RequestBody ConditionsVo conditions) {
         return new ResultBean<>(personService.getPersons(conditions));
     }
 
@@ -45,9 +46,10 @@ public class PersonController {
      * @param personLeaveVo 员工离职信息
      * @return
      */
-    @RequestMapping(path = "/person/leave", method = RequestMethod.POST)
     @ApiOperation(value = "员工离职")
-    public ResultBean<Boolean> leave(@RequestBody PersonLeaveVo personLeaveVo) {
+    @RequestMapping(path = "/person/leave", method = RequestMethod.POST)
+    public ResultBean<Boolean>
+    leave(@RequestBody PersonLeaveVo personLeaveVo) {
         return new ResultBean<>(personService.leave(personLeaveVo));
     }
 
@@ -57,10 +59,11 @@ public class PersonController {
      * @param id 员工唯一标识符
      * @return 是否删除
      */
-    @DeleteMapping(path = "/person/{id}")
+    @RequestMapping(path = "/person/{id}", method = RequestMethod.DELETE)
     @ApiOperation(value = "删除员工")
     @ApiParam(name = "id", value = "员工唯一标识符", required = true)
-    public ResultBean<Boolean> delete(@PathVariable int id) {
+    public ResultBean<Boolean>
+    delete(@PathVariable int id) {
         return new ResultBean<>(personService.delete(id));
     }
 
@@ -71,11 +74,12 @@ public class PersonController {
      * @param person
      * @return
      */
-    @PutMapping(path = "/person/{id}")
+    @RequestMapping(path = "/person/{id}", method = RequestMethod.PUT)
     @ApiOperation(value = "修改员工")
     @ApiParam(name = "id", value = "员工唯一标识符", required = true)
-    public ResultBean<Boolean> updatePerson(@PathVariable int id,
-                                            @Valid @RequestBody PersonVo person) {
+    public ResultBean<Boolean>
+    updatePerson(@PathVariable int id,
+                 @Valid @RequestBody PersonVo person) {
         return new ResultBean<>(personService.updatePerson(id, person));
     }
 
@@ -85,10 +89,11 @@ public class PersonController {
      * @param id
      * @return
      */
-    @GetMapping(path = "/person/{id}")
+    @RequestMapping(path = "/person/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "查询单个员工")
     @ApiParam(name = "id", value = "员工唯一标识符", required = true)
-    public ResultBean<PersonInfoVo> getPerson(@PathVariable int id) {
+    public ResultBean<PersonInfoVo>
+    getPerson(@PathVariable int id) {
         return new ResultBean<>(personService.getPerson(id));
     }
 
@@ -98,9 +103,8 @@ public class PersonController {
      * @param id
      * @return
      */
-    @GetMapping(path = "/person/list")
+    @RequestMapping(path = "/person/list", method = RequestMethod.GET)
     @ApiOperation(value = "查询所有员工")
-    @ApiParam(name = "id", value = "员工唯一标识符", required = true)
     public ResultBean<PagePersonInfoVo> getPersonList(int offset, int size) {
         return new ResultBean<>(personService.getPersonList(offset, size));
     }
@@ -111,9 +115,10 @@ public class PersonController {
      * @param person
      * @return
      */
-    @PostMapping(path = "/person")
+    @RequestMapping(path = "/person", method = RequestMethod.POST)
     @ApiOperation(value = "添加员工")
-    public ResultBean<Integer> addPerson(@Valid @RequestBody PersonVo person) {
+    public ResultBean<Integer>
+    addPerson(@Valid @RequestBody PersonVo person) {
         return new ResultBean<>(personService.addPerson(person));
     }
 
@@ -125,10 +130,10 @@ public class PersonController {
      * @return
      */
     @ApiOperation("上传头像")
-    @PutMapping(path = "/Portrait/{id}")
-    public ResultBean<String> uploadPortrait(@PathVariable int id,
-                                             @RequestParam(required = true)
-                                                     MultipartFile profile) {
+    @RequestMapping(path = "/portrait/{id}", method = RequestMethod.PUT)
+    public ResultBean<String>
+    uploadPortrait(@PathVariable int id,
+                   @RequestParam(required = true) MultipartFile profile) {
         return new ResultBean<>(personService.uploadPortrait(profile, id));
     }
 
@@ -139,15 +144,16 @@ public class PersonController {
      * @param password
      * @return
      */
-    @ApiOperation("Login")
-    @PutMapping(path = "/login")
+    @ApiOperation("login")
+    @RequestMapping(path = "/login", method = RequestMethod.POST)
     public ResultBean<PersonInfoVo> login(@RequestParam String name,
                                           @RequestParam String password,
-                                          HttpServletRequest request, HttpServletResponse response) {
+                                          HttpServletRequest request,
+                                          HttpServletResponse response) {
         System.out.println("login_________________________");
         System.out.println(request.getSession().getId());
-        request.getSession().setAttribute("user",14101310);
-        PersonInfoVo personInfoVo=new PersonInfoVo();
+        request.getSession().setAttribute("user", 14101310);
+        PersonInfoVo personInfoVo = new PersonInfoVo();
         personInfoVo.setName("luzhiqing");
         return new ResultBean<>(personInfoVo);
     }

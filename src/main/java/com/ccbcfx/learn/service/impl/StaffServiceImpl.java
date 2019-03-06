@@ -6,12 +6,12 @@ import com.ccbcfx.learn.remote.dto.ConditionsDTO;
 import com.ccbcfx.learn.remote.dto.PageStaffDTO;
 import com.ccbcfx.learn.remote.dto.StaffDTO;
 import com.ccbcfx.learn.service.PersonService;
+import com.ccbcfx.learn.util.BeanUtil;
 import com.ccbcfx.learn.vo.request.ConditionsVo;
 import com.ccbcfx.learn.vo.request.PersonLeaveVo;
 import com.ccbcfx.learn.vo.request.PersonVo;
 import com.ccbcfx.learn.vo.response.PagePersonInfoVo;
 import com.ccbcfx.learn.vo.response.PersonInfoVo;
-import ma.glasnost.orika.MapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static com.ccbcfx.learn.util.UserUtil.*;
@@ -29,8 +28,14 @@ import static com.ccbcfx.learn.util.UserUtil.*;
 @Service
 public class StaffServiceImpl implements PersonService {
 
+    /**
+     * 头像存储位置
+     */
     @Value("${profile.store-path:#{null}}")
     String profileStorePath;
+    /**
+     * 头像服务路径
+     */
     @Value("${profile.server-url:#{null}}")
     String profileServerUrl;
 
@@ -40,16 +45,13 @@ public class StaffServiceImpl implements PersonService {
     @Autowired
     com.ccbcfx.learn.remote.client.StaffService staffService;
 
-    @Autowired
-    MapperFactory mapperFactory;
 
 
     @Override
     public int addPerson(PersonVo staffVo) {
         StaffDTO staff = new StaffDTO();
         staff.setName(staffVo.getName());
-        LocalDate birthday = staffVo.getBirthday();
-        staff.setBirthday(birthday);
+        staff.setBirthday(staffVo.getBirthday());
         staff.setDocumentType(staffVo.getDocumentType());
         staff.setDocumentNumber(staffVo.getDocumentNumber());
         staff.setCreateBy(getUser());
@@ -67,33 +69,32 @@ public class StaffServiceImpl implements PersonService {
 
     @Override
     public boolean updatePerson(int id, PersonVo staffVo) {
-        StaffDTO staffDto = mapperFactory.getMapperFacade().map(staffVo, StaffDTO.class);
+        StaffDTO staffDto = BeanUtil.map(staffVo, StaffDTO.class);
         staffDto.setUpdateBy(getUser());
         staffDto.setUpdateAt(LocalDateTime.now());
-
         return staffService.updateStaff(id, staffDto);
     }
 
     @Override
     public PersonInfoVo getPerson(int id) {
         StaffDTO staffDto = staffService.getStaff(id);
-        return mapperFactory.getMapperFacade().map(staffDto, PersonInfoVo.class);
+        return BeanUtil.map(staffDto, PersonInfoVo.class);
     }
 
     @Override
     public PagePersonInfoVo getPersonList(int offset, int size) {
         PageStaffDTO pageStaffDTO = staffService.getStaffList(offset,size);
-        PagePersonInfoVo staffInfoVo = mapperFactory.getMapperFacade().map(pageStaffDTO, PagePersonInfoVo.class);
+        PagePersonInfoVo staffInfoVo = BeanUtil.map(pageStaffDTO, PagePersonInfoVo.class);
         return staffInfoVo;
     }
 
     @Override
     public PagePersonInfoVo getPersons(ConditionsVo conditionsVo) {
-        ConditionsDTO conditionsDto = mapperFactory.getMapperFacade().map(conditionsVo.getConditions(), ConditionsDTO.class);
+        ConditionsDTO conditionsDto = BeanUtil.map(conditionsVo.getConditions(), ConditionsDTO.class);
         int offset = conditionsVo.getOffset();
         int size = conditionsVo.getSize();
         PageStaffDTO staffDto = staffService.getStaffs(conditionsDto, offset, size);
-        PagePersonInfoVo staffInfoVo = mapperFactory.getMapperFacade().map(staffDto, PagePersonInfoVo.class);
+        PagePersonInfoVo staffInfoVo = BeanUtil.map(staffDto, PagePersonInfoVo.class);
         return staffInfoVo;
     }
 

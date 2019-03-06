@@ -7,6 +7,11 @@ spring:
     name: api-person
   session:
     store-type: redis
+  mvc:
+    view:
+      prefix: /
+      suffix: .html
+#-------rabbit配置信息
   rabbitmq:
     host: 127.0.0.1
     port: 5672
@@ -16,24 +21,17 @@ spring:
     publisher-returns: true
     template:
       mandatory: true
-  mvc:
-    view:
-      prefix: /
-      suffix: .html
+#------redis配置信息
   redis:
     host: 119.29.75.134
     port: 6379
     password: 7416kobe
-#    static-path-pattern: /image/**
-#  resources:
-#    static-locations: file:D:/img/staff/profile
 
+#-------头像上传相关
 profile:
   store-path: D:/img/staff/profile
-  server-url: http://localhost:8081/image/
-
-
-
+  server-url: http://localhost:8083/image/
+#-------服务注册中心
 eureka:
   client:
     serviceUrl:

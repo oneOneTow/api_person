@@ -1,8 +1,8 @@
 package com.ccbcfx.learn.aop;
 
 import com.ccbcfx.learn.bean.ResultBean;
-import com.ccbcfx.learn.exception.CheckException;
-import com.ccbcfx.learn.exception.UnloginException;
+import com.ccbcfx.learn.exception.BaseException;
+import com.ccbcfx.learn.exception.ErrorCode;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -21,17 +21,25 @@ import org.springframework.context.annotation.Configuration;
 public class ControllerAop {
     private static final Logger logger = LoggerFactory.getLogger(ControllerAop.class);
 
+    /**
+     * aop切面
+     */
     @Pointcut("execution(public com.ccbcfx.learn.bean.ResultBean *(..))")
-    public void excuteService(){}
-    @Around("excuteService()")
-    public Object handlerControllerMethod(ProceedingJoinPoint thisJoinPoint){
+    public void executeService() {
+    }
+
+    /**
+     * contoller 切面拦截方法
+     *
+     * @param thisJoinPoint
+     * @return
+     */
+    @Around("executeService()")
+    public Object handlerControllerMethod(ProceedingJoinPoint thisJoinPoint) {
         long startTime = System.currentTimeMillis();
-
         ResultBean<?> result;
-
         try {
             result = (ResultBean<?>) thisJoinPoint.proceed();
-
             long elapsedTime = System.currentTimeMillis() - startTime;
             logger.info("[{}]use time: {}", thisJoinPoint.getSignature(), elapsedTime);
         } catch (Throwable e) {
@@ -40,24 +48,26 @@ public class ControllerAop {
         return result;
     }
 
+    /**
+     * 异常处理
+     *
+     * @param pjp
+     * @param e
+     * @return
+     */
     private ResultBean<?> handlerException(ProceedingJoinPoint pjp, Throwable e) {
         ResultBean<?> result = new ResultBean();
 
         // 已知异常
-        // 校验出错，参数非法
-        if (e instanceof CheckException
-                || e instanceof IllegalArgumentException) {
+        if (e instanceof BaseException) {
             result.setMsg(e.getLocalizedMessage());
-            result.setCode(ResultBean.CHECK_FAIL);
+            result.setCode(((BaseException) e).getErrorCode());
         }
-        if (e instanceof UnloginException ) {
-            result.setMsg(e.getLocalizedMessage());
-            result.setCode(ResultBean.UN_LOGIN);
-        }
+        // 未知异常
         else {
             logger.error(pjp.getSignature() + " error ", e);
             result.setMsg(e.toString());
-            result.setCode(ResultBean.UNKNOWN_EXCEPTION);
+            result.setCode(ErrorCode.UNKNOWN_EXCEPTION);
         }
         return result;
     }

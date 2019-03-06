@@ -3,6 +3,7 @@ package com.ccbcfx.learn.vo.request;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 
+import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,7 +13,7 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
 
-
+@Data
 public class PersonLeaveVo {
     @NotNull(message = "id不能为空")
     @Pattern(regexp = "[0-9]*", message = "id格式不对")
@@ -37,37 +38,4 @@ public class PersonLeaveVo {
     @Pattern(regexp = "[a-zA-Z\\u4E00-\\u9FA5]*", message = "姓名格式不对")
     @ApiModelProperty(value = "离职原因", name = "leaveReason", example = "个人原因")
     private String leaveReason;
-
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getLeaveTime() {
-        return leaveTime;
-    }
-
-    public void setLeaveTime(Date leaveTime) {
-        this.leaveTime = leaveTime;
-    }
-
-    public String getLeaveReason() {
-        return leaveReason;
-    }
-
-    public void setLeaveReason(String leaveReason) {
-        this.leaveReason = leaveReason;
-    }
 }

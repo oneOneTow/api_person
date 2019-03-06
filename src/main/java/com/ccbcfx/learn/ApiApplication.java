@@ -21,6 +21,10 @@ public class ApiApplication {
         SpringApplication.run(ApiApplication.class,args);
     }
 
+    /**
+     *
+     * @return
+     */
     @Bean
     public ObjectMapper serializingObjectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
