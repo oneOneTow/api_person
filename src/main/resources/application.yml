@@ -3,6 +3,8 @@ server:
   session:
     timeout: 10000
 spring:
+  profiles:
+    active: @profileActive@
   application:
     name: api-person
   session:
@@ -11,31 +13,23 @@ spring:
     view:
       prefix: /
       suffix: .html
-#-------rabbit配置信息
   rabbitmq:
-    host: 127.0.0.1
+    host: 39.107.239.107
     port: 5672
-    username: guest
-    password: guest
+    username: admin
+    password: admin
     publisher-confirms: true
     publisher-returns: true
     template:
       mandatory: true
-#------redis配置信息
   redis:
-    host: 119.29.75.134
+    host: 39.107.239.107
     port: 6379
     password: 7416kobe
-
-#-------头像上传相关
-profile:
-  store-path: D:/img/staff/profile
-  server-url: http://localhost:8083/image/
-#-------服务注册中心
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://119.29.75.134:8761/eureka/
+      defaultZone: http://39.107.239.107:8761/eureka/
   instance:
     prefer-ip-address: true
 feign:

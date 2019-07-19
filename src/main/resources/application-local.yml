@@ -1,0 +1,4 @@
+#-------头像上传相关
+profile:
+  store-path: D:/img/staff/profile
+  server-url: http://localhost:8083/image/
